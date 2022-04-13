@@ -62,7 +62,6 @@ reversa [] = []
 reversa (x:xs) = reversa xs ++ [x]
 
 zipMaximos :: [Int] -> [Int] -> [Int]
-zipMaximos [] [] = []
 zipMaximos [] ys = ys
 zipMaximos xs [] = xs
 zipMaximos(x:xs) (y:ys) = max x y : zipMaximos xs ys
@@ -78,8 +77,7 @@ factorial 0 = 0
 factorial n = n * factorial (n-1)
 
 cuentaRegresiva :: Int -> [Int]
-cuentaRegresiva 0 = [1]
-cuentaRegresiva n = if n > 1
+cuentaRegresiva n = if n >= 1
                         then n : cuentaRegresiva (n-1)
                         else []
 
@@ -89,9 +87,11 @@ repetir n e = e : repetir (n-1) e
 
 losPrimeros :: Int -> [a] -> [a]
 losPrimeros _ [] = []
+losPrimeros 0 xs = []
 losPrimeros n (x:xs) = x : losPrimeros (n-1) xs
 
 sinLosPrimeros :: Int -> [a] -> [a]
+sinLosPrimeros _ [] = []
 sinLosPrimeros 0 xs = xs
 sinLosPrimeros n (x:xs) = sinLosPrimeros (n-1) xs
 
@@ -110,7 +110,6 @@ mayoresA n (x:xs) = if edad x > n
                         else mayoresA n xs
 
 promedioEdad :: [Persona] -> Int
-promedioEdad (x:[]) = edad x
 promedioEdad xs = div (sumatoriaEdades xs) (length xs)
 
 sumatoriaEdades :: [Persona] -> Int
