@@ -201,14 +201,20 @@ losDevSenior (ConsEmpresa rs) ps = cantProyectosDeRolEnProyecto (proyectosDeRole
 
 soloSenior :: [Rol] -> [Rol]
 soloSenior [] = []
-soloSenior (x:xs) = if esSenior x
+soloSenior (x:xs) = ienior x
                         then x : soloSenior xs
                         else soloSenior xs 
 
 esSenior :: Rol -> Bool
-esSenior (Developer Senior _) = True
-esSenior (Management Senior _) = True
-esSenior r = False
+esSenior r = esSenioritySenior (seniority r)
+
+seniority :: Rol -> Seniority
+seniority (Developer s _) = s
+seniority (Management s _) = s
+
+esSenioritySenior :: Seniority -> Bool
+esSenioritySenior Senior = True
+esSenioritySenior _ = False
 
 cantProyectosDeRolEnProyecto :: [Proyecto] -> [Proyecto] -> Int
 cantProyectosDeRolEnProyecto [] _ = 0
