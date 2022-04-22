@@ -164,12 +164,12 @@ tree' = NodeT 1
 
 ramaMasLarga :: Tree a -> [a]
 ramaMasLarga EmptyT = []
-ramaMasLarga (NodeT e ti td) = e : ramaMasLarga (laMasLarga ti td)
+ramaMasLarga (NodeT e ti td) = e : laMasLarga (ramaMasLarga ti) (ramaMasLarga td)
 
-laMasLarga :: Tree a -> Tree a -> Tree a
-laMasLarga ti td = if heightT ti > heightT td
-                    then ti
-                    else td
+laMasLarga :: [a] -> [a] -> [a]
+laMasLarga xs ys = if length xs > length ys
+                    then xs
+                    else ys
 
 todosLosCaminos :: Tree a -> [[a]]
 todosLosCaminos EmptyT = []
