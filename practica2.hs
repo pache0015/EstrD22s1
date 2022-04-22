@@ -231,22 +231,22 @@ cantQueTrabajanEn :: [Proyecto] -> Empresa -> Int
 cantQueTrabajanEn ps (ConsEmpresa rs) = cantProyectosDeRolEnProyecto (proyectosDeRoles rs) ps
 
 asignadosPorProyecto :: Empresa -> [(Proyecto, Int)]
-asignadosPorProyecto (ConsEmpresa rs) = agruparProyectos(proyectosYCantRoles rs)
+asignadosPorProyecto (ConsEmpresa rs) = proyectosYCantRoles (todosLosProyectos rs)
 
-proyectosYCantRoles :: [Rol] -> [(Proyecto , Int)]
+todosLosProyectos :: [Rol] -> [Proyecto]
+todosLosProyectos [] = []
+todosLosProyectos (x:xs) = proyecto x : todosLosProyectos xs
+
+proyectosYCantRoles :: [Proyecto] -> [(Proyecto , Int)]
 proyectosYCantRoles []      = []
-proyectosYCantRoles (x:xs)  = ((proyecto x) , 1) : proyectosYCantRoles xs
+proyectosYCantRoles (x:xs)  = ( x , (cantApariciones  x xs)) : proyectosYCantRoles (quitarApariciones x xs)
 
-agruparProyectos :: [(Proyecto, Int)] -> [(Proyecto, Int)]
-agruparProyectos [] = []
-agruparProyectos (x:xs) = (fst x, (snd x + cantApariciones x xs)) : agruparProyectos (quitarApariciones x xs)
+cantApariciones :: Proyecto -> [(Proyecto , Int)] -> Int
+cantApariciones p [] = 0
+cantApariciones p (x:xs) = unoSi (mismoProyecto p (fst x)) + cantApariciones p xs
 
-cantApariciones :: (Proyecto, Int) -> [(Proyecto , Int)] -> Int
-cantApariciones pi [] = 0
-cantApariciones pi (x:xs) = unoSi (mismoProyecto (fst pi) (fst x)) + cantApariciones pi xs
-
-quitarApariciones :: (Proyecto, Int) -> [(Proyecto , Int)] -> [(Proyecto , Int)]
-quitarApariciones pi [] = []
-quitarApariciones pi (x:xs) = if mismoProyecto (fst pi) (fst x)
-                                then quitarApariciones pi xs
-                                else x : quitarApariciones pi xs
+quitarApariciones :: Proyecto -> [(Proyecto , Int)] -> [(Proyecto , Int)]
+quitarApariciones p [] = []
+quitarApariciones p (x:xs) = if mismoProyecto p (fst x)
+                                then quitarApariciones p xs
+                                else x : quitarApariciones p xs

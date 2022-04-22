@@ -136,7 +136,7 @@ posicionAPosicion :: [[a]] -> [[a]] -> [[a]]
 posicionAPosicion [] [] = []
 posicionAPosicion [] (y:ys) = y : posicionAPosicion [] ys
 posicionAPosicion (x:xs) [] = x : posicionAPosicion xs []
-posicionAPosicion (x:xs) (y:ys) = [x,y] ++ posicionAPosicion xs ys
+posicionAPosicion (x:xs) (y:ys) = [x,y] ++ posicionAPosicion xs ys 
 
 
 --                1
