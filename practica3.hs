@@ -5,25 +5,29 @@ unoSi False = 0
 data Color = Azul | Rojo
 data Celda = Bolita Color Celda | CeldaVacia
 
--- nroBolitas :: Color -> Celda -> Int
--- nroBolitas _ CeldaVacia     = 0
--- nroBolitas c1 (Bolita c2 cel) = unoSi(mismoColor c1 c2) + nroBolitas c1 cel
+mismoColor :: Color -> Color -> Bool
+mismoColor Azul Azul = True
+mismoColor Rojo Rojo = True
+mismoColor _ _       = False
 
--- poner :: Color -> Celda -> Celda
--- poner c1 CeldaVacia      = (Bolita c1 CeldaVacia)
--- poner c1 (Bolita c2 cel) = (Bolita c1 (Bolita c2 cel))
+nroBolitas :: Color -> Celda -> Int
+nroBolitas _ CeldaVacia     = 0
+nroBolitas c1 (Bolita c2 cel) = unoSi(mismoColor c1 c2) + nroBolitas c1 cel
 
--- sacar :: Color -> Celda -> Celda
--- sacar col1 CeldaVacia = CeldaVacia
--- sacar col1 (Bolita col2 cel) = if (esMismoColor col1 col2)
---                                 then cel
---                                 else (Bolita col2 cel)
+poner :: Color -> Celda -> Celda
+poner c1 cel = (Bolita c1 cel)
+
+sacar :: Color -> Celda -> Celda
+sacar col1 CeldaVacia = CeldaVacia
+sacar col1 (Bolita col2 cel) = if (mismoColor col1 col2)
+                                then cel
+                                else (Bolita col2 cel)
 
 ponerN :: Int -> Color -> Celda -> Celda
-ponerN n col1 CeldaVacia = (Bolita col1 CeldaVacia)
-ponerN n col1 (Bolita col2 cel) = if n >= 1
-                                    then (Bolita col1 (ponerN (n-1) col2 cel))
-                                    else (Bolita col2 cel)
+ponerN 0 col1 cel = cel
+ponerN n col1 cel = if n >= 1
+                    then (Bolita col1 (ponerN (n-1) col1 cel))
+                    else cel
 
 
 data Objeto = Cacharro | Tesoro
