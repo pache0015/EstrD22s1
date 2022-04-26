@@ -239,14 +239,13 @@ todosLosProyectos (x:xs) = proyecto x : todosLosProyectos xs
 
 proyectosYCantRoles :: [Proyecto] -> [(Proyecto , Int)]
 proyectosYCantRoles []      = []
-proyectosYCantRoles (x:xs)  = ( x , (cantApariciones  x xs)) : proyectosYCantRoles (quitarApariciones x xs)
+proyectosYCantRoles (x:xs)  = agregarProyectoATupla x (proyectosYCantRoles xs)
 
-cantApariciones :: Proyecto -> [(Proyecto , Int)] -> Int
-cantApariciones p [] = 0
-cantApariciones p (x:xs) = unoSi (mismoProyecto p (fst x)) + cantApariciones p xs
+agregarProyectoATupla :: Proyecto -> [(Proyecto , Int)] -> [(Proyecto , Int)]
+agregarProyectoATupla p [] = (p,1) : []
+agregarProyectoATupla p ((x,n):xns) = if esMismoProyecto p x
+                                    then (x,n+1) : xns
+                                    else (x,n) : xns
 
-quitarApariciones :: Proyecto -> [(Proyecto , Int)] -> [(Proyecto , Int)]
-quitarApariciones p [] = []
-quitarApariciones p (x:xs) = if mismoProyecto p (fst x)
-                                then quitarApariciones p xs
-                                else x : quitarApariciones p xs
+esMismoProyecto :: Proyecto -> Proyecto -> Bool
+esMismoProyecto p1 p2 = nombreProyecto p1 == nombreProyecto p2
