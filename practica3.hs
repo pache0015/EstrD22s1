@@ -26,7 +26,7 @@ sacar col1 (Bolita col2 cel) = if (mismoColor col1 col2)
 ponerN :: Int -> Color -> Celda -> Celda
 ponerN 0 col1 cel = cel
 ponerN n col1 cel = if n >= 1
-                    then (Bolita col1 (ponerN (n-1) col1 cel))
+                    then ponerN (n-1) col1 (poner col1 cel)
                     else cel
 
 
@@ -211,10 +211,31 @@ exp3 = Neg (Valor 2)
 
 -- simplificar :: ExpA -> ExpA
 -- simplificar (Valor n)      = Valor n
--- simplificar (Sum   e1 e2)  = simplificarSum e1 e2
--- simplificar (Prod  e1 e2)  = simplificarSProd e1 e2
--- simplificar (Neg   e1)     = simplificarNeg e1
+-- simplificar (Sum   e1 e2)  = simplificarSum     (simplificar e1) (simplificar e2)
+-- simplificar (Prod  e1 e2)  = simplificarSProd   (simplificar e1) (simplificar e2)
+-- simplificar (Neg   e1)     = simplificarNeg     (simplificar e1)
 
+-- simplificarSum :: ExpA -> ExpA -> ExpA
+-- simplificarSum (Valor n1) (Valor n2) = sumaExpA n1 n2
+
+-- sumaExpA :: Int -> Int -> ExpA
+-- sumaExpA 0 n    = Valor n
+-- sumaExpA n 0    = Valor n
+-- sumaExpA n1 n2  = Valor (n1 + n2)
+
+-- simplificarSProd :: ExpA -> ExpA -> ExpA
+-- simplificarSProd (Valor n1) (Valor n2) = prodExpA n1 n2
+
+-- prodExpA :: Int -> Int -> ExpA
+-- prodExpA 0 _    = Valor 0
+-- prodExpA _ 0    = Valor 0
+-- prodExpA 1 n    = Valor n
+-- prodExpA n 1    = Valor n
+-- prodExpA n1 n2  = Valor (n1*n2)
+
+-- simplificarNeg :: ExpA -> ExpA
+-- simplificarNeg (Neg n)  = Valor n
+-- simplificarNeg e        = e
 
 
 -- Dudas:
