@@ -84,10 +84,12 @@ cantTesorosEntre n1 n2 (Nada cam) = cantTesorosEntre (n1-1) n2 cam
 
 cantTesorosHasta :: Int -> Camino -> Int
 cantTesorosHasta n Fin = 0
-cantTesorosHasta n (Cofre objs cam) = if n >= 0
-                                        then unoSi(tieneTesoro objs) + cantTesorosHasta (n-1) cam
-                                        else cantTesorosHasta (n-1) cam
-cantTesorosHasta n (Nada cam) = cantTesorosHasta (n-1) cam
+cantTesorosHasta n (Cofre objs cam) = if n>=0
+                                        then cantTesoros objs + cantTesorosHasta (n-1) cam
+                                        else 0 
+cantTesorosHasta n (Nada cam) = if n>=0
+                                        then cantTesorosHasta (n-1) cam
+                                        else 0
 
 
 data Tree a = EmptyT | NodeT a (Tree a) (Tree a)
@@ -114,7 +116,11 @@ aparicionesT e1 (NodeT e2 ti td) = unoSi (e1 == e2) + aparicionesT e1 ti + apari
 
 leaves :: Tree a -> [a]
 leaves EmptyT = []
-leaves (NodeT e ti td) = e : leaves ti ++ leaves td
+leaves (NodeT e ti td) = agregarSiEsHoja e (leaves ti ++ leaves td)
+
+agregarSiEsHoja :: a -> [a] -> [a]
+agregarSiEsHoja e [] = [e]
+agregarSiEsHoja e xs = xs 
 
 heightT :: Tree a -> Int
 heightT EmptyT = 0
@@ -179,7 +185,7 @@ laMasLarga xs ys = if length xs > length ys
 
 todosLosCaminos :: Tree a -> [[a]]
 todosLosCaminos EmptyT = []
-todosLosCaminos (NodeT e ti td) = agregaE e (todosLosCaminos ti) ++ agregaE e (todosLosCaminos td)
+todosLosCaminos (NodeT e ti td) = [e] : agregaE e (todosLosCaminos ti ++ todosLosCaminos td)
 -- Quiero que de: [[1,2,4],[1,2,5],[1,3,6]]
 
 agregaE :: a -> [[a]] -> [[a]]
