@@ -67,10 +67,12 @@ alMenosNTesoros n camino = n <= cantTesorosEnCamino camino
 
 cantTesorosEnCamino:: Camino -> Int
 cantTesorosEnCamino Fin = 0
-cantTesorosEnCamino (Cofre objs cam) = if tieneTesoro objs
-                                        then 1 + cantTesorosEnCamino cam
-                                        else cantTesorosEnCamino cam
+cantTesorosEnCamino (Cofre objs cam) = cantTesoros objs + cantTesorosEnCamino cam
 cantTesorosEnCamino (Nada cam) = cantTesorosEnCamino cam
+
+cantTesoros :: [Objeto] -> Int
+cantTesoros [] = 0
+cantTesoros (x:xs)= unoSi (esTesoro x) + cantTesoros xs
 
 --Desafio
 cantTesorosEntre :: Int -> Int -> Camino -> Int
@@ -209,33 +211,28 @@ exp  = Sum (Valor 2) (Valor 3)
 exp2 = Prod (Valor 2) (Valor 3)
 exp3 = Neg (Valor 2)
 
--- simplificar :: ExpA -> ExpA
--- simplificar (Valor n)      = Valor n
--- simplificar (Sum   e1 e2)  = simplificarSum     (simplificar e1) (simplificar e2)
--- simplificar (Prod  e1 e2)  = simplificarSProd   (simplificar e1) (simplificar e2)
--- simplificar (Neg   e1)     = simplificarNeg     (simplificar e1)
+simplificar :: ExpA -> ExpA
+simplificar (Valor n)      = Valor n
+simplificar (Sum   e1 e2)  = simplificarSum     (simplificar e1) (simplificar e2)
+simplificar (Prod  e1 e2)  = simplificarSProd   (simplificar e1) (simplificar e2)
+simplificar (Neg   e1)     = simplificarNeg     (simplificar e1)
 
--- simplificarSum :: ExpA -> ExpA -> ExpA
--- simplificarSum (Valor n1) (Valor n2) = sumaExpA n1 n2
+simplificarSum :: ExpA -> ExpA -> ExpA
+simplificarSum (Valor 0) e1 = e1
+simplificarSum e1 (Valor 0) = e1
+simplificarSum e1 e2 = Sum e1 e2
 
--- sumaExpA :: Int -> Int -> ExpA
--- sumaExpA 0 n    = Valor n
--- sumaExpA n 0    = Valor n
--- sumaExpA n1 n2  = Valor (n1 + n2)
+simplificarSProd :: ExpA -> ExpA -> ExpA
+simplificarSProd (Valor 0) e1 = Valor 0
+simplificarSProd e1 (Valor 0) = Valor 0
+simplificarSProd (Valor 1) e1 = e1
+simplificarSProd e1 (Valor 1) = e1
+simplificarSProd e1 e2 = Prod e1 e2
 
--- simplificarSProd :: ExpA -> ExpA -> ExpA
--- simplificarSProd (Valor n1) (Valor n2) = prodExpA n1 n2
 
--- prodExpA :: Int -> Int -> ExpA
--- prodExpA 0 _    = Valor 0
--- prodExpA _ 0    = Valor 0
--- prodExpA 1 n    = Valor n
--- prodExpA n 1    = Valor n
--- prodExpA n1 n2  = Valor (n1*n2)
-
--- simplificarNeg :: ExpA -> ExpA
--- simplificarNeg (Neg n)  = Valor n
--- simplificarNeg e        = e
+simplificarNeg :: ExpA -> ExpA
+simplificarNeg (Neg e)  = e
+simplificarNeg e        = e
 
 
 -- Dudas:
