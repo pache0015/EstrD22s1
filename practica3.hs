@@ -79,8 +79,8 @@ cantTesorosEntre :: Int -> Int -> Camino -> Int
 --Crei necesario hacer un doble pm porque solo necesito hacer uso de cantTesorosHasta cuando el primer n es cero.
 cantTesorosEntre 0 n cam = cantTesorosHasta n cam
 cantTesorosEntre n _ Fin = 0
-cantTesorosEntre n1 n2 (Cofre objs cam) = cantTesorosEntre (n1-1) n2 cam
-cantTesorosEntre n1 n2 (Nada cam) = cantTesorosEntre (n1-1) n2 cam
+cantTesorosEntre n1 n2 (Cofre objs cam) = cantTesorosEntre (n1-1) (n2-1) cam
+cantTesorosEntre n1 n2 (Nada cam) = cantTesorosEntre (n1-1) (n2-1) cam
 
 cantTesorosHasta :: Int -> Camino -> Int
 cantTesorosHasta n Fin = 0
