@@ -221,7 +221,7 @@ simplificar :: ExpA -> ExpA
 simplificar (Valor n)      = Valor n
 simplificar (Sum   e1 e2)  = simplificarSum     (simplificar e1) (simplificar e2)
 simplificar (Prod  e1 e2)  = simplificarSProd   (simplificar e1) (simplificar e2)
-simplificar (Neg   e1)     = simplificarNeg     (simplificar e1)
+simplificar (Neg   e1)     = agregarNegSiNoSeSimplifica     (simplificar e1)
 
 simplificarSum :: ExpA -> ExpA -> ExpA
 simplificarSum (Valor 0) e1 = e1
@@ -236,12 +236,9 @@ simplificarSProd e1 (Valor 1) = e1
 simplificarSProd e1 e2 = Prod e1 e2
 
 
-simplificarNeg :: ExpA -> ExpA
-simplificarNeg (Neg e)  = e
-simplificarNeg e        = e
+agregarNegSiNoSeSimplifica :: ExpA -> ExpA
+agregarNegSiNoSeSimplifica (Neg e)  = e
+agregarNegSiNoSeSimplifica e        = Neg e
 
-
--- Dudas:
---  - simplificar
 
 -- Para pasar codigo en dc: ```
